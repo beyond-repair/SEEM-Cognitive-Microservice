@@ -9,6 +9,7 @@ import sys
 import torch
 import random
 from datetime import datetime
+
 from core.resonator import ResonatorVSA
 from core.banel import BaNEL, Route
 from core.dream import DreamPhase
@@ -27,14 +28,13 @@ with open(CONFIG_PATH) as f:
 API_KEY = CONFIG.get("api_key", "your-secure-vsa-key-123")
 DAEMON_PORT = CONFIG.get("daemon_port", 5555)
 
-active_twin = "brian_new"
-
-# CORE
+# Core instances
 vsa = ResonatorVSA(dim=16384, sparsity_k=256, iters=10)
 banel = BaNEL(tau=9.0, min_invert=0.925)
 dream_phase = DreamPhase(banel)
+active_twin = "brian_new"
 
-# PERSISTENCE
+# Persistence
 def save_state(twin):
     path = f"{TWINS_DIR}/{twin}/state.json"
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -64,7 +64,7 @@ def load_state(twin):
             r.dreams = rd["dreams"]
             banel.register_route(r)
 
-# PLUGIN LOADER
+# Plugin loader (dynamic)
 def load_plugin(plugin_name):
     try:
         mod = __import__(f"plugins.{plugin_name}", fromlist=["execute"])
@@ -72,7 +72,7 @@ def load_plugin(plugin_name):
     except ImportError:
         return None
 
-# EXECUTE MISSION
+# Core mission logic (separated for clarity)
 def execute_mission(intent, twin):
     global active_twin
     if active_twin != twin:
@@ -82,14 +82,13 @@ def execute_mission(intent, twin):
 
     composite = vsa.random_hv()
     binder = vsa.random_hv()
-    recovered, invert_score = vsa.unbind(composite, binder, verbose=False)
+    _, invert_score = vsa.unbind(composite, binder, verbose=False)
 
     intent_hash = hashlib.sha256(intent.encode()).hexdigest()[:12]
     route_id = f"route_{twin}_{intent_hash}"
 
     if route_id not in banel.routes:
-        route_hv = vsa.random_hv()
-        banel.register_route(Route(route_id, route_hv))
+        banel.register_route(Route(route_id, vsa.random_hv()))
 
     route = banel.routes[route_id]
     success = invert_score >= banel.min_invert
@@ -118,7 +117,7 @@ def execute_mission(intent, twin):
         "route_id": route.id
     }
 
-# DAEMON
+# Daemon (kept minimal)
 def start_daemon():
     def signal_handler(sig, frame):
         print(f"[SHUTDOWN] Saving state at {datetime.now()}")

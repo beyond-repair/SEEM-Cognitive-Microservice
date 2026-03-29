@@ -96,7 +96,7 @@ This project is released under a custom sovereign license. See `LICENSE` for det
 
 ## Repository
 
-https://github.com/beyond-repair/SEEM-2.0-Self-Evolving-Emergent-Mind
+[https://github.com/beyond-repair/SEEM-Cognitive-Microservice]
 
 Built as a personal sovereign cognitive microservice. Use it, improve it, make it yours.
 

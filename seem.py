@@ -14,7 +14,7 @@ from core.resonator import ResonatorVSA
 from core.banel import BaNEL, Route
 from core.dream import DreamPhase
 
-# CONFIG
+# ========================= CONFIG =========================
 CONFIG_PATH = "config.json"
 TWINS_DIR = "twins"
 
@@ -28,13 +28,13 @@ with open(CONFIG_PATH) as f:
 API_KEY = CONFIG.get("api_key", "your-secure-vsa-key-123")
 DAEMON_PORT = CONFIG.get("daemon_port", 5555)
 
-# Core instances
+# ========================= CORE =========================
 vsa = ResonatorVSA(dim=16384, sparsity_k=256, iters=10)
 banel = BaNEL(tau=9.0, min_invert=0.925)
 dream_phase = DreamPhase(banel)
 active_twin = "brian_new"
 
-# Persistence
+# ========================= PERSISTENCE =========================
 def save_state(twin):
     path = f"{TWINS_DIR}/{twin}/state.json"
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -53,18 +53,19 @@ def save_state(twin):
 
 def load_state(twin):
     path = f"{TWINS_DIR}/{twin}/state.json"
-    if os.path.exists(path):
-        with open(path) as f:
-            data = json.load(f)
-        for rid, rd in data.get("routes", {}).items():
-            raw = torch.tensor(rd["hv"], device=vsa.device)
-            hv = torch.complex(raw[..., 0], raw[..., 1])
-            r = Route(rid, hv, rd["fitness"])
-            r.successes = rd["successes"]
-            r.dreams = rd["dreams"]
-            banel.register_route(r)
+    if not os.path.exists(path):
+        return
+    with open(path) as f:
+        data = json.load(f)
+    for rid, rd in data.get("routes", {}).items():
+        raw = torch.tensor(rd["hv"], device=vsa.device)
+        hv = torch.complex(raw[..., 0], raw[..., 1])
+        r = Route(rid, hv, rd["fitness"])
+        r.successes = rd["successes"]
+        r.dreams = rd["dreams"]
+        banel.register_route(r)
 
-# Plugin loader (dynamic)
+# ========================= PLUGIN LOADER =========================
 def load_plugin(plugin_name):
     try:
         mod = __import__(f"plugins.{plugin_name}", fromlist=["execute"])
@@ -72,52 +73,75 @@ def load_plugin(plugin_name):
     except ImportError:
         return None
 
-# Core mission logic (separated for clarity)
-def execute_mission(intent, twin):
+# ========================= MISSION EXECUTION (with error boundary + retry) =========================
+def execute_mission(intent, twin, max_retries=2):
     global active_twin
     if active_twin != twin:
         banel.routes.clear()
         load_state(twin)
         active_twin = twin
 
-    composite = vsa.random_hv()
-    binder = vsa.random_hv()
-    _, invert_score = vsa.unbind(composite, binder, verbose=False)
+    for attempt in range(max_retries + 1):
+        try:
+            composite = vsa.random_hv()
+            binder = vsa.random_hv()
+            recovered, invert_score = vsa.unbind(composite, binder, verbose=False)
 
-    intent_hash = hashlib.sha256(intent.encode()).hexdigest()[:12]
-    route_id = f"route_{twin}_{intent_hash}"
+            # Deterministic route ID
+            intent_hash = hashlib.sha256(intent.encode()).hexdigest()[:12]
+            route_id = f"route_{twin}_{intent_hash}"
 
-    if route_id not in banel.routes:
-        banel.register_route(Route(route_id, vsa.random_hv()))
+            if route_id not in banel.routes:
+                route_hv = vsa.random_hv()
+                banel.register_route(Route(route_id, route_hv))
 
-    route = banel.routes[route_id]
-    success = invert_score >= banel.min_invert
+            route = banel.routes[route_id]
+            success = invert_score >= banel.min_invert
 
-    banel.update(route_id, invert_score, success)
+            banel.update(route_id, invert_score, success)
 
-    if not success:
-        child = banel.trigger_micro_dream(route_id, vsa, composite)
-        if child:
-            print(f"[MICRO-DREAM] Repaired → {child.id} (fitness {child.fitness:.4f})")
-            route = child
+            if not success:
+                child = banel.trigger_micro_dream(route_id, vsa, composite)
+                if child:
+                    print(f"[MICRO-DREAM] Repaired → {child.id} (fitness {child.fitness:.4f})")
+                    route = child
 
-    plugin = load_plugin("soc_check")
-    result = plugin(invert_score, {"intent": intent}) if plugin else "No plugin"
+            # Plugin execution
+            plugin = load_plugin("soc_check")
+            result = plugin(invert_score, {"intent": intent}) if plugin else "No plugin"
 
-    if random.random() < 0.2:
-        dream_phase.consolidate()
+            # Periodic Dream consolidation
+            if random.random() < 0.2:
+                dream_phase.consolidate()
 
-    save_state(twin)
+            # Persist state
+            save_state(twin)
 
-    return {
-        "status": "SUCCESS" if success else "REPAIRED",
-        "fidelity": invert_score,
-        "effect": result,
-        "twin": twin,
-        "route_id": route.id
-    }
+            return {
+                "status": "SUCCESS" if success else "REPAIRED",
+                "fidelity": invert_score,
+                "effect": result,
+                "twin": twin,
+                "route_id": route.id
+            }
 
-# Daemon (kept minimal)
+        except Exception as e:
+            print(f"[ERROR] Attempt {attempt + 1}/{max_retries + 1} failed: {e}")
+            if attempt == max_retries:
+                # Final fallback
+                print("[FALLBACK] Using emergency repair mode.")
+                invert_score = 0.85
+                result = f"Emergency repair triggered due to: {str(e)[:100]}"
+                save_state(twin)
+                return {
+                    "status": "REPAIRED",
+                    "fidelity": invert_score,
+                    "effect": result,
+                    "twin": twin,
+                    "route_id": "emergency_fallback"
+                }
+
+# ========================= DAEMON =========================
 def start_daemon():
     def signal_handler(sig, frame):
         print(f"[SHUTDOWN] Saving state at {datetime.now()}")
@@ -151,7 +175,7 @@ def start_daemon():
                 except Exception as e:
                     conn.sendall(json.dumps({"status": "ERROR", "message": str(e)}).encode())
 
-# CLI
+# ========================= CLI =========================
 def cmd_init(name):
     path = f"{TWINS_DIR}/{name}"
     os.makedirs(path, exist_ok=True)

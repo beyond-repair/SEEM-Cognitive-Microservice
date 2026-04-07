@@ -1,0 +1,26 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix seem: <https://seem.ai/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Invertibility Threshold
+seem:InvertibilityThresholdShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf seem:invertibilityScore ;
+    sh:property [
+        sh:path seem:invertibilityScore ;
+        sh:datatype xsd:float ;
+        sh:minInclusive 0.925 ;
+        sh:message "Invertibility score must be ≥ 0.925" ;
+    ] .
+
+# Max Iterations for Resonator
+seem:ResonatorIterationsShape
+    a sh:NodeShape ;
+    sh:targetClass seem:MemSkillRoute ;
+    sh:property [
+        sh:path seem:resonatorIterations ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 3 ;
+        sh:maxInclusive 10 ;
+        sh:message "Resonator iterations must be between 3 and 10" ;
+    ] .

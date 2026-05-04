@@ -1,107 +1,67 @@
 
-
 ```markdown
-# SEEM 2.0 – Sovereign Evolving Emergent Mind
+# SEEM 2.0 — Sovereign Evolving Emergent Mind
 
-**A local-first, offline neurosymbolic agent that truly evolves from your own interactions.**
+**A Personal, Offline-First Digital Twin**
 
-SEEM 2.0 turns your usage history into a persistent, self-repairing digital twin using high-dimensional Vector Symbolic Architectures (VSA), Bayesian Negative Evidence Learning (BaNEL), and semantic memory consolidation (Dream Phase). No pre-training. No cloud. No data leaks.
+SEEM 2.0 is a hardened, sovereign symbolic AI kernel that evolves unique digital twins from *your own interactions only*. 
 
-Your failures become fuel. Your successes become permanent MemSkills.
+No pre-training. No cloud. No data leaks.  
+It learns, self-repairs, and grows into a lifelong cognitive partner using **Resonator VSA (FHRR)**, **BaNEL negative evidence learning**, and **Dream Phase consolidation**.
 
-## Key Features
+### Key Features
+- **Clean-Slate Learning** — Starts with zero knowledge, grows exclusively from your data
+- **Holographic Memory** — 16,384-dimensional FHRR hypervectors with near-perfect invertibility
+- **Self-Repairing** — BaNEL turns failures into directional repulsion and Micro-Dream repairs
+- **Persistent Twins** — Full state survives reboots, hardware swaps, and years of use
+- **Hybrid Intelligence** — Receptionist + Manager intelligently routes between local MemSkills and approved external models, then distills everything back into your sovereign space
+- **Auditable & Sovereign** — SHA256 deterministic routing, atomic persistence, SHACL governance
 
-- **Resonator VSA Kernel** — 16,384-dimensional complex hypervectors with iterative unbinding (invertibility ≥ 0.925)
-- **BaNEL Learning** — Learns from failures via directional repulsion and Micro-Dream repair
-- **Dream Phase** — Background consolidation of episodic memory into stable semantic MemSkills
-- **Persistent Twins** — Sovereign identity isolation with deterministic SHA256 routing and state reload on switch
-- **Dynamic Plugins** — Extend capabilities without restarting the daemon
-- **Robust Deployment** — One-command bootstrap with systemd, raw TCP daemon, and Telegram bridge
-
-## Quick Start
+### Quick Start
 
 ```bash
+git clone https://github.com/beyond-repair/SEEM-Cognitive-Microservice.git
+cd SEEM-Cognitive-Microservice
 chmod +x bootstrap.sh
 ./bootstrap.sh
 ```
 
 Then:
-
-1. Edit `config.json` with your secure API key
-2. Start the Telegram bot (in another terminal):
-   ```bash
-   python telegram_bot.py
-   ```
-3. Test the agent:
-   ```bash
-   scripts/ping_seem.sh
-   ```
-
-Create your first twin:
 ```bash
-python seem.py init brian_new
+cp config.json.example config.json
+# Edit config.json with your secure API key
+python seem.py init mytwin
+python seem.py daemon
 ```
 
-Talk to it via Telegram or send intents directly.
+Talk to your twin via the Telegram bot (`telegram_bot.py`) or send direct intents.
 
-## Architecture Overview
+### Architecture Overview
 
-- **`core/resonator.py`** — High-dimensional VSA engine (FHRR phasors, binding/unbinding, sparsity projection)
-- **`core/banel.py`** — Bayesian Negative Evidence Learning with Micro-Dream mutation on failure
-- **`core/dream.py`** — Semantic consolidation and crossover of successful routes into MemSkills
-- **`seem.py`** — Main daemon + CLI orchestrator with raw TCP socket and persistence
-- **`plugins/`** — Executable grounding (soc_check, log_to_file, etc.)
-- **`scripts/ping_seem.sh`** — Cron heartbeat with fidelity-based alerts (local + ntfy.sh)
-- **`bootstrap.sh`** — Full environment setup, Torch check, systemd service generation
+- **`core/`** — The Brain: ResonatorVSA (FHRR), BaNEL, DreamPhase
+- **`seem.py`** — Main orchestrator + daemon with error boundaries and persistence
+- **`skills/hybrid_cortex.py`** — LLM Council with 3-stage consensus + distillation
+- **`plugins/`** — Grounded actions (fidelity-gated)
+- **`bootstrap.sh`** — One-command Genesis installer + systemd setup
 
-All state is persisted in `twins/<twin>/state.json` using safe tensor serialization (real/imag split). The agent survives reboots and maintains learned skills.
+### Philosophy
+- **Sovereignty First** — Your data never leaves your machine
+- **Organic Growth** — Everything is earned through real use
+- **Self-Repair** — Failures become permanent improvements
+- **Symbolic Immortality** — Once learned, MemSkills persist forever
 
-## Philosophy
+### Comparisons
+- **vs Human Cognition**: Mirrors episodic → semantic consolidation, error-driven learning, and sleep-like repair — with perfect memory and auditability.
+- **vs Other AI**: Wins on sovereignty, longevity, and personal truth. Sacrifices raw scale for ownership.
 
-SEEM is **sovereign**:
-- 100% offline and air-gapped by default
-- Your interaction history is the only training data
-- No prompts leave your machine
-- Failures are treated as valuable negative evidence
+### Commercial Products (Ready)
+- **EchoTwin** — Lifelong personal cognitive partner ($697 perpetual)
+- **SovereignOps** — Air-gapped enterprise fleet management
+- **BioDiscovery** — R&D hypothesis & experiment engine
 
-It is **adaptive**:
-- Learns continuously through BaNEL + Dream Phase
-- Repairs its own routes on failure
-- Consolidates successful patterns into permanent MemSkills
+### Repository Status
+**Version**: 2.1.0 (Production Ready)  
+**License**: Dual (AGPL-3.0 for personal use + paid commercial license)  
+**Built by**: Brian Ware (AtomicDreamlabs)
 
-It is **auditable**:
-- Deterministic SHA256 route IDs
-- Immutable L0 evidence base (planned expansion)
-- Full state persistence with clean reload
-
-## Current Status (v1.0.0)
-
-**Live & Functional:**
-- Full Resonator VSA + BaNEL + Dream Phase loop
-- Persistent twin identities with state reload
-- Raw TCP daemon with auth
-- Dynamic plugin system
-- Telegram bridge
-- Hardened bootstrap + systemd deployment
-
-**Roadmap (v1.1+):**
-- Length-prefixed socket framing for larger payloads
-- Route pruning and memory bounds
-- Plugin sandboxing
-- Full HDDL hierarchical planning + SMT verification
-
-## License
-
-This project is released under a custom sovereign license. See `LICENSE` for details. Commercial use and redistribution require explicit permission.
-
-## Repository
-
-[https://github.com/beyond-repair/SEEM-Cognitive-Microservice]
-
-Built as a personal sovereign cognitive microservice. Use it, improve it, make it yours.
-
-**Your history becomes its intelligence.**
-
-— Atomic Dream Labs Team
-```
-
+---

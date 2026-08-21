@@ -1,6 +1,5 @@
-> **SUPERSEDED**  
-> This repository is **legacy**.  
-> **Final form:** https://github.com/beyond-repair/sovereign-clean-room  
+> **⚠️ SUPERSEDED:** This repository is historical archive only. All active development has consolidated into **[sovereign-clean-room](https://github.com/beyond-repair/sovereign-clean-room)**.
+>
 > Do not add new features here.
 
 ---
@@ -9,7 +8,7 @@
 
 Historical hardened-microservice line (Resonator VSA, BaNEL, Dream, HybridCortex).
 
-**Active development:** [sovereign-clean-room](https://github.com/beyond-repair/sovereign-clean-room) — Clean-Room VSA Core v1.3 (pure NumPy, constitutional invertibility gate, atomic persistence).
+**Active development:** [sovereign-clean-room](https://github.com/beyond-repair/sovereign-clean-room) — Clean-Room VSA Core v1.3+ (pure NumPy, constitutional invertibility gate, atomic persistence).
 
 ```bash
 git clone https://github.com/beyond-repair/sovereign-clean-room.git

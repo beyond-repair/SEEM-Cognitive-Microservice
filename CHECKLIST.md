@@ -1,14 +1,20 @@
-# SEEM 2.0 Implementation Checklist
+> **⚠️ SUPERSEDED / HISTORICAL ONLY**  
+> This checklist records *intended* implementation state as of the original authoring period.  
+> All ✅ marks and “Production Ready” language are **historical intent**.  
+> See `CLAIM_STATUS.md` and the repository README.  
+> Active development lives exclusively in **[sovereign-clean-room](https://github.com/beyond-repair/sovereign-clean-room)**.
 
-**Version 2.1.0 Release Preparation**
-**Target Date**: April 7, 2026
-**Status**: Production Ready
+# SEEM 2.0 Implementation Checklist (LEGACY)
+
+**Version 2.1.0 Release Preparation (historical)**  
+**Target Date**: April 7, 2026  
+**Status**: Historical / SUPERSEDED — not production-validated under current governance
 
 ---
 
 ## Core Components
 
-### ✅ Resonator VSA Engine (`core/resonator.py`)
+### ✅ Resonator VSA Engine (`core/resonator.py`) — historical intent
 
 - [x] 16,384-dimensional complex hypervectors (FHRR)
 - [x] FHRR binding via element-wise complex conjugate multiplication `a ⊙ b̄`
@@ -19,7 +25,7 @@
 - [x] Holographic redundancy (50% corruption recovery)
 - [x] CUDA/CPU device handling
 
-### ✅ BaNEL Learning (`core/banel.py`)
+### ✅ BaNEL Learning (`core/banel.py`) — historical intent
 
 - [x] Route class with fitness tracking
 - [x] Negative evidence learning via phase-aware directional repulsion
@@ -30,7 +36,7 @@
 - [x] Route registration and retrieval
 - [x] Exponential moving average of fidelity
 
-### ✅ Dream Phase (`core/dream.py`)
+### ✅ Dream Phase (`core/dream.py`) — historical intent
 
 - [x] Semantic consolidation from episodic routes
 - [x] Holographic averaging of high-fitness routes
@@ -40,7 +46,7 @@
 - [x] Background consolidation triggers
 - [x] Lossless semantic compression
 
-### ✅ Core Orchestrator (`seem.py`)
+### ✅ Core Orchestrator (`seem.py`) — historical intent
 
 - [x] SHA256 deterministic routing
 - [x] Twin identity management (init, switch, status)
@@ -56,7 +62,7 @@
 
 ## Infrastructure
 
-### ✅ Bootstrap & Deployment (`bootstrap.sh`)
+### ✅ Bootstrap & Deployment (`bootstrap.sh`) — historical intent
 
 - [x] Environment validation (Python 3.10+, git, jq)
 - [x] PyTorch installation check
@@ -67,7 +73,7 @@
 - [x] rclone backup check
 - [x] Dry-run and no-daemon modes
 
-### ✅ Systemd Service (`systemd/seem-agent.service`)
+### ✅ Systemd Service (`systemd/seem-agent.service`) — historical intent
 
 - [x] Network-dependent startup
 - [x] Auto-restart on failure
@@ -75,7 +81,7 @@
 - [x] User-specific execution
 - [x] Absolute path resolution
 
-### ✅ Monitoring (`scripts/ping_seem.sh`)
+### ✅ Monitoring (`scripts/ping_seem.sh`) — historical intent
 
 - [x] Raw TCP heartbeat via netcat
 - [x] JSON payload construction
@@ -89,7 +95,7 @@
 
 ## Documentation
 
-### ✅ Core Documentation (v2.1.0)
+### ✅ Core Documentation (v2.1.0) — historical
 
 - [x] `README.md` - Professional quick start and overview with badges
 - [x] `WHITE_PAPER.md` - Complete architecture with FHRR deep-dive
@@ -115,7 +121,7 @@
 
 ## Plugins & Skills
 
-### ✅ Current Plugins
+### ✅ Current Plugins — historical
 
 - [x] `log_to_file.py` - File logging with timestamp
 - [x] `soc_check.py` - Security operations stub
@@ -152,7 +158,7 @@
 
 ## Communication Bridges
 
-### ✅ Telegram Bot (`telegram_bot.py`)
+### ✅ Telegram Bot (`telegram_bot.py`) — historical
 
 - [x] Bot token configuration
 - [x] User ID authentication
@@ -171,7 +177,7 @@
 
 ## Testing & Quality
 
-### ✅ Manual Testing
+### ✅ Manual Testing — historical notes only
 
 - [x] Twin initialization
 - [x] State persistence across restarts
@@ -198,7 +204,7 @@
 
 ## Security & Hardening
 
-### ✅ Current Security
+### ✅ Current Security — historical
 
 - [x] API key authentication
 - [x] Localhost-only binding
@@ -221,7 +227,7 @@
 
 ## Performance & Optimization
 
-### ✅ Current Performance
+### ✅ Current Performance — historical
 
 - [x] CUDA/CPU device selection
 - [x] Sparse projection (k=256) for FHRR efficiency
@@ -267,7 +273,7 @@
 
 ---
 
-## Release Checklist (v2.1.0)
+## Release Checklist (v2.1.0) — historical; not executed under governance
 
 ### Pre-Release
 
@@ -300,7 +306,7 @@
 
 ## Version Roadmap
 
-### v2.1.0 (Current - April 2026)
+### v2.1.0 (Current - April 2026) — historical intent only
 
 Production-ready core with full VSA/FHRR/BaNEL/Dream cycle
 
@@ -334,7 +340,7 @@ Production-ready core with full VSA/FHRR/BaNEL/Dream cycle
 
 ---
 
-## Key Technical Milestones (v2.1.0)
+## Key Technical Milestones (v2.1.0) — historical
 
 - [x] FHRR engine complete and validated (≥0.925 invertibility)
 - [x] BaNEL phase-aware repulsion implemented
@@ -354,6 +360,5 @@ Production-ready core with full VSA/FHRR/BaNEL/Dream cycle
 
 ---
 
-**Last Updated**: April 6, 2026
-**Next Review**: Weekly until v2.1.0 release
-**Document Hash**: SHA256 tag on release
+**Last Updated**: 2026-09-11 (governance claim-cap applied)  
+**Document Hash**: N/A (historical)

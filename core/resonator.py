@@ -1,16 +1,20 @@
 import torch
 import torch.nn.functional as F
 
+
 class ResonatorVSA:
     def __init__(self, dim=16384, sparsity_k=256, iters=10, device=None):
-        self.dim = dim
-        self.sparsity_k = sparsity_k
-        self.iters = iters
-        self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
+        if dim < 4:
+            raise ValueError("dim must be >= 4 so the codebook has at least one column")
+        self.dim = int(dim)
+        self.sparsity_k = max(1, min(int(sparsity_k), self.dim))
+        self.iters = int(iters)
+        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.codebook = self._generate_codebook()
 
     def _generate_codebook(self):
-        cb = torch.randn(self.dim, self.dim // 4, dtype=torch.complex64, device=self.device)
+        cols = self.dim // 4
+        cb = torch.randn(self.dim, cols, dtype=torch.complex64, device=self.device)
         return F.normalize(cb, dim=0)
 
     def random_hv(self):
@@ -26,7 +30,7 @@ class ResonatorVSA:
             x = x * binder.conj()
             mag = torch.abs(x)
             thresh = torch.topk(mag, self.sparsity_k).values[-1]
-            x = x * (mag >= thresh).float()
+            x = x * (mag >= thresh).to(x.dtype)
             if i < self.iters - 1:
                 proj = torch.matmul(x, self.codebook)
                 x = torch.matmul(proj, self.codebook.T.conj())

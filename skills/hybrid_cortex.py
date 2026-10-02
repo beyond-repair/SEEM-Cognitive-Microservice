@@ -1,5 +1,6 @@
 # skills/hybrid_cortex.py
 import asyncio
+import os
 import json
 from typing import List, Dict
 from core.resonator import ResonatorVSA
@@ -11,9 +12,11 @@ class HybridCortex:
         self.chairman = "anthropic/claude-4"
 
     async def query_model(self, model: str, prompt: str) -> str:
-        """In production: replace with real OpenRouter or SDK calls."""
-        print(f"[HybridCortex] Querying {model}...")
-        await asyncio.sleep(0.8)  # Simulated latency
+        """Placeholder council member. No network call and no model weights."""
+        print(f"[HybridCortex] Querying {model} (simulated)...")
+        delay = float(os.environ.get("SEEM_SIM_DELAY", "0.8"))
+        if delay > 0:
+            await asyncio.sleep(delay)
         return f"[SIMULATED {model}] Refined response to: {prompt[:80]}..."
 
     async def get_consensus(self, intent: str) -> str:

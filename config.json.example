@@ -1,6 +1,12 @@
 {
   "api_key": "your-secure-vsa-key-123",
   "daemon_port": 5555,
+  "dim": 256,
+  "sparsity_k": 32,
+  "iters": 5,
+  "min_invert": 0.925,
+  "dream_probability": 0.2,
+  "plugin": "soc_check",
   "cloud_remote": "dropbox:SEEM-backups",
   "rclone_path": "~/.config/rclone/rclone.conf"
 }

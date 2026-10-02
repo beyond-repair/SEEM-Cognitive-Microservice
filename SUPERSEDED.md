@@ -17,14 +17,15 @@ Historical microservice packaging, bootstrap, HybridCortex sketch, TECHNICAL_VSA
 - No validated invertibility target (`min_invert=0.925` is a historical constant, not evidence).
 - No experimental validation of FHRR, BaNEL, or Dream consolidation.
 - Checklist marks in `CHECKLIST.md` are historical intent only.
+- A later repair added `pytest` for install/run behavior. Those tests are not experimental validation.
 
 ## Discover snapshot (Sweep-169)
 
 - Default branch `main`. Public. Not archived. Open issues 0.
-- No `.github/workflows`. No test suite. No release tags observed this pass.
-- Runtime imports `torch` (`core/banel.py`, `seem.py`). `config.json` is gitignored; example only.
+- No `.github/workflows`. Behavior tests live under `tests/` and do not certify scientific claims. No release tags observed this pass.
+- Runtime imports `torch` (`core/resonator.py`, `seem.py`). `config.json` is gitignored; example only. Default `dim` in the example is 256.
 - Placeholder default API key string in `seem.py` is not a committed live credential. Daemon binds `localhost` only.
-- Dynamic plugin import is historical and not a supported extension surface.
+- Default plugin is `plugins/soc_check.py` (mission log). `plugins/log_to_file.py` remains optional and is not called unless `plugin` is set to `log_to_file`.
 
 ## Operator-only residual
 

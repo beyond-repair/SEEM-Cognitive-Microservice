@@ -47,6 +47,8 @@ cp config.json.example config.json
 
 `config.json` is gitignored. The example `api_key` is a placeholder string, not a live credential. Edit it before exposing the daemon beyond your own machine. The daemon binds `127.0.0.1` only.
 
+`requirements.txt` uses the PyTorch CPU index, so this does not download CUDA libraries. The sketch runs on CPU.
+
 `bash bootstrap.sh` does the same venv, pip install, and example copy. It does not clone other repositories and it does not install systemd. `bash bootstrap.sh --dry-run` only prints the plan.
 
 ## Use

@@ -1,18 +1,18 @@
 # systemd/seem-agent.service
-# THIS IS A TEMPLATE. bootstrap.sh generates the correct version with absolute paths.
-# Do not copy this file manually to /etc/systemd/system/
+# TEMPLATE ONLY. Do not copy this file as-is.
+# Replace SEEM_INSTALL_DIR and SEEM_USER, then install it yourself if you want a service.
+# bootstrap.sh does not install systemd units.
 
 [Unit]
 Description=SEEM Sovereign Cognitive Microservice
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /path/to/SEEM-2.0-Self-Evolving-Emergent-Mind/seem.py daemon
-WorkingDirectory=/path/to/SEEM-2.0-Self-Evolving-Emergent-Mind
+ExecStart=/usr/bin/python3 SEEM_INSTALL_DIR/seem.py daemon
+WorkingDirectory=SEEM_INSTALL_DIR
 Restart=always
 RestartSec=5
-User=yourusername
-Environment="API_KEY=your-secure-vsa-key-123"
+User=SEEM_USER
 Environment="PYTHONUNBUFFERED=1"
 
 [Install]

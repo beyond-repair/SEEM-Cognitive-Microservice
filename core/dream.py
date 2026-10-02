@@ -3,6 +3,10 @@ import random
 import torch.nn.functional as F
 from .banel import Route
 
+# Assigned label written onto a consolidated route. Not a measured invertibility score.
+ASSIGNED_MEM_FITNESS = 0.98
+
+
 class DreamPhase:
     def __init__(self, banel):
         self.banel = banel
@@ -23,7 +27,7 @@ class DreamPhase:
         c_hv = F.normalize(c_hv, dim=0)
 
         cid = f"mem_{random.randint(1000, 9999)}"
-        self.banel.register_route(Route(cid, c_hv, fitness=0.98))
+        self.banel.register_route(Route(cid, c_hv, fitness=ASSIGNED_MEM_FITNESS))
 
-        print(f"[DREAM] Consolidated: {cid} (fitness {0.98:.4f})")
+        print(f"[DREAM] Consolidated: {cid} (assigned fitness label {ASSIGNED_MEM_FITNESS:.4f})")
         return cid

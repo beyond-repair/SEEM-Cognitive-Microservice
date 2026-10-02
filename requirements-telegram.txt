@@ -1,0 +1,2 @@
+# Optional. The CLI and daemon do not import Telegram.
+python-telegram-bot>=20.0

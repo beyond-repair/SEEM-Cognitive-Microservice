@@ -1,5 +1,7 @@
 # SEEM 2.0 Documentation Index
 
+> **Run path:** [README.md](README.md) is the only install, run, and test guide that matches this tree. `QUICK_REFERENCE.md`, `CONTRIBUTING.md`, and `RELEASE_NOTES_v2.1.0.md` are listed below but are not in the repository. `CHECKLIST.md` marks are historical intent. Claim cap: `CLAIM_STATUS.md`.
+
 **Complete Guide to All SEEM Resources**
 **Version 2.1.0 — April 2026**
 
